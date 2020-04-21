@@ -12,14 +12,16 @@ dset = np.array(dset1['price'][::-1])
 print(len(dset))
 x = list()
 x1 = list()
+f = open('real.txt', 'w')
 for i in range(0,59):
     for j in range(0,30):
         x1.append(dset[i+j])
+        f.write(str(dset[i+j]) + '\n')
     x.append([x1, dset[i+j+1]])
     x1 = list()
 for i in x:
     print(i)
-
+f.close()
 
 # класс, который реализует персептрон и его обучение
 class TPerceptron:
@@ -47,30 +49,22 @@ class TPerceptron:
             # обучение по всем набору примеров
             for t in T:
                 self.learn(la, t[0], t[1])
-# создаем класс двумерного персептрона
-'''perceptron = TPerceptron(3)
-la =  0.1 # константа обучения
-# создаем примеры
-T = list()
-T.append([[2,1,3], 1])
-T.append([[3,2,3], 1])
-T.append([[4,1,3], 1])
-T.append([[1,2,3], -1])
-T.append([[2,3,3], -1])
-T.append([[5,7,3], -1])
-print(T)
-perceptron.learning(la, T) # обучение персептрона
-print(perceptron.w) # печатаем веса
-# проверим работу на тестовых примерах
-print(perceptron.sign([1.5, 2,4]))
-print(perceptron.sign([3, 1.5,4]))
-print(perceptron.sign([5,1,4]))
-print(perceptron.sign([5,10,4]))'''
-
+# создаем класс  персептрона
 perceptron1 = TPerceptron(30)
 la = 0.00001
-perceptron1.learning(la,x) # обучение персептрона
+x1 = x[0:30]
+perceptron1.learning(la,x1) # обучение персептрона
 print("Веса ",perceptron1.w) # печатаем веса
 # проверим работу на тестовых примерах
-print('Результат ',perceptron1.calc(x[58][0]))
+print('Результат ', perceptron1.calc(x[30][0]))
 print(x[58][0])
+
+f1 = open('test1.txt', 'w')
+for i in range(0,30):
+    f1.write(str(perceptron1.calc(x[i][0])) + '\n')
+f1.close()
+
+f2 = open('test2.txt', 'w')
+for i in range(30,59):
+    f2.write(str(perceptron1.calc(x[i][0])) + '\n')
+f2.close()
